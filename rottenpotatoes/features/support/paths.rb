@@ -15,6 +15,10 @@ module NavigationHelpers
 
     when /^the home\s?page$/
       '/'
+    when /^the edit page for "(.*)"/
+      edit_movie_path(Movie.where(:title => $1).pluck(:id)[0])
+    when /^the details page for "(.*)"/
+      movie_path(Movie.where(:title => $1).pluck(:id)[0])
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

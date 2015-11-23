@@ -37,6 +37,11 @@ class MoviesController < ApplicationController
     # default: render 'new' template
   end
 
+  def find
+    logger.debug "#{params[:director]}"
+    @movies = Movie.where(director: params[:director])
+  end
+    
   def create
     @movie = Movie.create!(movie_params)
     flash[:notice] = "#{@movie.title} was successfully created."
