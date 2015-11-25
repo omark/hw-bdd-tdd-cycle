@@ -38,10 +38,13 @@ class MoviesController < ApplicationController
   end
 
   def find
-    logger.debug "#{params[:director]}"
-    @movies = Movie.where(director: params[:director])
+    id = params[:id]
+    @movie  = Movie.find(id)
+    @movies = Movie.where(director: @movie.director)
+    @movies = @movies.reject { |m| m.id == id.to_i }
+    redirect_to movies_path if @movies.empty?
   end
-    
+
   def create
     @movie = Movie.create!(movie_params)
     flash[:notice] = "#{@movie.title} was successfully created."
@@ -65,5 +68,4 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
-
 end

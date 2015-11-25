@@ -10,18 +10,15 @@ Then /the director of "(.*)" should be "(.*)"/ do |title,director|
   expect(Movie.where(:title => title).pluck(:director)[0]).to eq(director)
 end
 
-# Make sure that one string (regexp) occurs before or after another one
-#   on the same page
-
-Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
-  #  ensure that that e1 occurs before e2.
-  #  page.body is the entire content of the page as a string.
-  fail "Unimplemented"
+Then /I should see "(.*)" has no director info/ do |title|
+  regexp = /\s#{title}\s\w\s[0-9]/
+  expect(page).to have_content regexp
 end
 
-# Make it easier to express checking or unchecking several boxes at once
-#  "When I uncheck the following ratings: PG, G, R"
-#  "When I check the following ratings: G"
+Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
+  regexp = /#{e1}.*#{e2}/m
+  expect(page).to have_content regexp
+end
 
 When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
   # HINT: use String#split to split up the rating_list, then
@@ -34,4 +31,3 @@ Then /I should see all the movies/ do
   # Make sure that all the movies in the app are visible in the table
   fail "Unimplemented"
 end
-
